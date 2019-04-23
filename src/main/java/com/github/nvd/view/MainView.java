@@ -25,6 +25,7 @@ import com.github.nvd.util.FileUtil;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -70,7 +71,9 @@ public class MainView extends VerticalLayout {
     private TextField endDateTime = new TextField("end datetime", "2019-04-19 13:47:30", "");
     private HorizontalLayout downloadParamsBar = new HorizontalLayout(nvrIpAddress, channel, startDateTime, endDateTime);
     private HorizontalLayout systemInfoBar = new HorizontalLayout(diskSpace);
-    private VerticalLayout downloadVideoLayout = new VerticalLayout(systemInfoBar, downloadParamsBar, dateBar, downloadBtn, encodeBtn, refreshBtn, downloadedVideoFilesGrid);
+    ComboBox<String> comboBox = new ComboBox<>("Type");
+    private HorizontalLayout downloadBar = new HorizontalLayout(comboBox, downloadBtn);
+    private VerticalLayout downloadVideoLayout = new VerticalLayout(systemInfoBar, downloadParamsBar, dateBar, downloadBar, encodeBtn, refreshBtn, downloadedVideoFilesGrid);
     private DownloadFileProgressListener progressListener;
     private Timer autoUpdateInfoOnPage = new Timer();
 
@@ -126,6 +129,18 @@ public class MainView extends VerticalLayout {
 
         listPresets();
         message.setVisible(true);
+        
+        comboBox.setItems("From selected channel", "From all channels");
+        comboBox.setValue("From selected channel");
+        comboBox.setWidth("250px");
+
+//        comboBox.addValueChangeListener(event -> {
+//            if (event.getSource().isEmpty()) {
+//                message.setText("No browser selected");
+//            } else {
+//                message.setText("Selected browser: " + event.getValue());
+//            }
+//        });
     }
 
     @Override
