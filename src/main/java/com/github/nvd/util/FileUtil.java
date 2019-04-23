@@ -20,7 +20,7 @@ public class FileUtil {
     }
 
     public static String nvrHomeDir() {
-        return System.getProperty("user.home") + "/nvr";
+        return System.getProperty("user.home") + "/nvr/";
     }
     
 

@@ -60,6 +60,7 @@ public class MainView extends VerticalLayout {
     private Button addNewBtn = new Button("New preset", VaadinIcon.PLUS.create());
     private Button downloadBtn = new Button("Download", VaadinIcon.DOWNLOAD.create());
     private Button encodeBtn = new Button("Encode", VaadinIcon.AIRPLANE.create());
+    private Button refreshBtn = new Button("Refresh", VaadinIcon.REFRESH.create());
     private HorizontalLayout toolBar = new HorizontalLayout(filter, addNewBtn);
     private Div message = createMessageDiv("tes");
     private HorizontalLayout dateBar = new HorizontalLayout(message);
@@ -69,7 +70,7 @@ public class MainView extends VerticalLayout {
     private TextField endDateTime = new TextField("end datetime", "2019-04-19 13:47:30", "");
     private HorizontalLayout downloadParamsBar = new HorizontalLayout(nvrIpAddress, channel, startDateTime, endDateTime);
     private HorizontalLayout systemInfoBar = new HorizontalLayout(diskSpace);
-    private VerticalLayout downloadVideoLayout = new VerticalLayout(systemInfoBar, downloadParamsBar, dateBar, downloadBtn, encodeBtn, downloadedVideoFilesGrid);
+    private VerticalLayout downloadVideoLayout = new VerticalLayout(systemInfoBar, downloadParamsBar, dateBar, downloadBtn, encodeBtn, refreshBtn, downloadedVideoFilesGrid);
     private DownloadFileProgressListener progressListener;
     private Timer autoUpdateInfoOnPage = new Timer();
 
@@ -112,6 +113,10 @@ public class MainView extends VerticalLayout {
         encodeBtn.addClickListener(e -> {
             CompletableFuture.runAsync(() -> encodeService
                     .encode(nvrIpAddress.getValue(), channel.getValue(), startDateTime.getValue(), endDateTime.getValue()));
+        });
+        
+        refreshBtn.addClickListener(e -> {
+            filesList();
         });
 
         editor.setChangeHandler(() -> {
