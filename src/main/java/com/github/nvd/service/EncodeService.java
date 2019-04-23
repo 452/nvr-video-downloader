@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.kokorin.jaffree.LogLevel;
@@ -28,10 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 public class EncodeService {
 
     private final static Path BIN = Paths.get("/usr/bin");
-
+    
     public void encode(String nvrIpAddress, String channel, String startDateTime, String endDateTime) {
         log.info("Encode started");
-        String videoFile = "/tmp/test/" + FileUtil.makeFileName(channel, startDateTime, endDateTime);
+        String videoFile = FileUtil.nvrHomeDir() + FileUtil.makeFileName(channel, startDateTime, endDateTime);
         Path video = Paths.get(videoFile + ".dav");
         Path outputVideo = Paths.get(videoFile + ".mp4");
         final AtomicLong duration = new AtomicLong();

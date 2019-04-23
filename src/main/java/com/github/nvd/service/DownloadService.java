@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class DownloadService {
     }
 
     private void saveToFile(Response response, String fileName) throws IOException {
-        File videoFile = new File("/tmp/test/" + fileName + ".dav");
+        File videoFile = new File(FileUtil.nvrHomeDir() + fileName + ".dav");
         // try (BufferedSource bufferedSource = response.body().source()) {
         // BufferedSink bufferedSink = Okio.buffer(Okio.sink(videoFile));
         // bufferedSink.writeAll(bufferedSource);

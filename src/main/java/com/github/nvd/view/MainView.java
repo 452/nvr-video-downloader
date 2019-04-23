@@ -61,14 +61,12 @@ public class MainView extends VerticalLayout {
     private Button downloadBtn = new Button("Download", VaadinIcon.DOWNLOAD.create());
     private Button encodeBtn = new Button("Encode", VaadinIcon.AIRPLANE.create());
     private HorizontalLayout toolBar = new HorizontalLayout(filter, addNewBtn);
-    private DatePicker startDatePicker = new DatePicker();
-    private DatePicker endDatePicker = new DatePicker();
     private Div message = createMessageDiv("tes");
-    private HorizontalLayout dateBar = new HorizontalLayout(startDatePicker, endDatePicker, message);
+    private HorizontalLayout dateBar = new HorizontalLayout(message);
     private TextField nvrIpAddress = new TextField("NVR IP Address", "192.168.30.4", "");
     private TextField channel = new TextField("NVR channel", "3", "");
-    private TextField startDateTime = new TextField("start datetime", "2019-04-07 10:00:00", "");
-    private TextField endDateTime = new TextField("end datetime", "2019-04-07 10:00:30", "");
+    private TextField startDateTime = new TextField("start datetime", "2019-04-19 13:46:00", "");
+    private TextField endDateTime = new TextField("end datetime", "2019-04-19 13:47:30", "");
     private HorizontalLayout downloadParamsBar = new HorizontalLayout(nvrIpAddress, channel, startDateTime, endDateTime);
     private HorizontalLayout systemInfoBar = new HorizontalLayout(diskSpace);
     private VerticalLayout downloadVideoLayout = new VerticalLayout(systemInfoBar, downloadParamsBar, dateBar, downloadBtn, encodeBtn, downloadedVideoFilesGrid);
@@ -76,14 +74,11 @@ public class MainView extends VerticalLayout {
     private Timer autoUpdateInfoOnPage = new Timer();
 
     public MainView(DownloadService downloadService, EncodeService encodeService, VideoEncoderPresetRepository videoEncoderPresetRepository, VideoPresetEditor editor, VideoDownloader videoDownloader) {
+        File dir = new File(FileUtil.nvrHomeDir());
+        if (!dir.exists())
+            dir.mkdirs();
         this.downloadService = downloadService;
         diskSpace.setTitle("Free Disk Space");
-        startDatePicker.setLabel("Start");
-        endDatePicker.setLabel("End");
-        startDatePicker.setMax(LocalDate.now().plusDays(0));
-        endDatePicker.setMax(LocalDate.now().plusDays(0));
-        startDatePicker.setValue(LocalDate.now());
-        endDatePicker.setValue(LocalDate.now());
         this.videoEncoderPresetRepository = videoEncoderPresetRepository;
         this.editor = editor;
         this.videoDownloader = videoDownloader;
@@ -184,7 +179,7 @@ public class MainView extends VerticalLayout {
     private void filesList() {
         Collection<DownloadedVideoFile> items = new LinkedList<DownloadedVideoFile>();
         try {
-            Files.newDirectoryStream(Paths.get("/tmp/test/"), path -> path.toString().endsWith(".dav") || path.toString().endsWith(".mp4")).forEach(file -> {
+            Files.newDirectoryStream(Paths.get(FileUtil.nvrHomeDir()), path -> path.toString().endsWith(".dav") || path.toString().endsWith(".mp4")).forEach(file -> {
                 DownloadedVideoFile item = new DownloadedVideoFile();
                 item.setFileName(file.toFile().getAbsolutePath());
                 item.setFileSize(FileUtil.humanReadableByteCount(file.toFile().length()));

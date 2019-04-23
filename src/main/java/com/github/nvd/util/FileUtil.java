@@ -19,6 +19,11 @@ public class FileUtil {
         return ("ch-" + channel + "-" + startDateTime + "-" + startDateTime).replace(" ", "-").replace(":", "-");
     }
 
+    public static String nvrHomeDir() {
+        return System.getProperty("user.home") + "/nvr";
+    }
+    
+
     public static void main(String[] args) {
         System.out.println(makeFileName("2", "2018-12-05 10:00:00", "2018-13-05 12:00:00"));
     }

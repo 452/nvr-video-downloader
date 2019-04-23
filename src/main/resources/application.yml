@@ -1,3 +1,4 @@
+nvr.home: ${user.home}/nvr
 
 spring:
   h2:
